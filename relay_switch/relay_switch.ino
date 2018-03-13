@@ -1,28 +1,27 @@
-//This example will use a static IP to control the switching of a relay. Over LAN using a web browser. 
-//A lot of this code have been resued from the example on the ESP8266 Learning Webpage below. 
-//http://www.esp8266learning.com/wemos-webserver-example.php
+//Przykladowy kod wykorzystujacy statyczny adres IP prostego serwera opartego na ukladzie
+//ESP8266 w module WEMOS D1
+//Sterowanie mozliwe w zakresie sieci intranet
 
-//CODE START 
-//1
+
+//zalaczenie bilbioteki mikrokontrolera
 #include <ESP8266WiFi.h>
 
-// Below you will need to use your own WIFI informaiton.
-//2
-const char* ssid = "UPC62DAB45"; //WIFI Name, WeMo will only connect to a 2.4GHz network.
-const char* password = "Q85kaeduQdfb"; //WIFI Password
+//deklaracja danych koniecznych do uzyskania polaczenia z routerem
+const char* ssid = "UPC62DAB45"; 
+const char* password = "Q85kaeduQdfb"; 
 
-//defining the pin and setting up the "server"
-//3
-int relayPin = D2; // The Shield uses pin 1 for the relay
+//okreslenie pinu sprzezonego modulem przekaznika
+
+int relayPin = D2;
 WiFiServer server(80);
-IPAddress ip(192, 168, 0, 31); // where xx is the desired IP Address
-IPAddress gateway(10, 0, 0, 1); // set gateway to match your network
-IPAddress subnet(255, 255, 255, 0); // set subnet mask to match your network
 
 
-// void setup is where we initialize variables, pin modes, start using libraries, etc. 
-//The setup function will only run once, after each powerup or reset of the wemos board.
-//4
+IPAddress ip(192, 168, 0, 31); // ustawienie statycznego adresu IP
+IPAddress gateway(10, 0, 0, 1); // ustawienie pasujacej bramki
+IPAddress subnet(255, 255, 255, 0); // ustawienie maski podsieci
+
+// pierwsza charakterystyczna dla mikrokontrolera funkcja incjalizujaca zmienne, predkosci transmisji,
+//przeznaczenie wyprowadzen; wykonwana jednokrotnie
 void setup() {
   Serial.begin(115200);
   delay(10);
@@ -34,55 +33,53 @@ void setup() {
   Serial.print(F("Setting static ip to : "));
   Serial.println(ip);
   
-  // Connect to WiFi network
-  //5
+  //Polaczenie z lokalna siecia WIFI
   Serial.println();
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.config(ip, gateway, subnet); 
   WiFi.begin(ssid, password);
-  //Trying to connect it will display dots
+  
+  //Proba polaczenia sygnalizowana przez pojawiajace sie w terminalu kropki
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(500); // ustawienie czasu oczekiwania na odpowiedz
     Serial.print(".");
   }
   Serial.println("");
   Serial.println("WiFi connected");
  
-  // Start the server
+  // Informacja o rozpoczeciu polaczenia
   server.begin();
   Serial.println("Server started");
  
-  // Print the IP address
-  Serial.print("Use this URL : ");
+  // Wyswietlenie podstawowych parametrow polaczenia
+  Serial.print("URL : ");
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/"); 
 }
 
-//void loop is where you put all your code. it is a funtion that returns nothing and will repeat over and over again
-//6
+// druga charakterystyczna dla mikrokontrolerow funkcja wykonywana cyklicznie
 void loop() {
-  // Check if a client has connected
+  // sprawdzanie polaczenia
   WiFiClient client = server.available();
   if (!client) {
     return;
   }
  
-  // Wait until the client sends some data
+  // oczekiwanie na informacje o polaczniu
   Serial.println("new client");
   while(!client.available()){
     delay(1);
   }
  
-  // Read the first line of the request
+  // odczytanie pierwszej linii zadania
   String request = client.readStringUntil('\r');
   Serial.println(request);
   client.flush();
  
-  //Match the request, checking to see what the currect state is
-  int value = LOW;
+  //sprawdzenie aktualnego stanu przekaznika i zapamietanie poprzedniego
   if (request.indexOf("/relay=ON") != -1) {
     digitalWrite(relayPin, LOW);
     value = LOW;
@@ -91,12 +88,12 @@ void loop() {
     digitalWrite(relayPin, HIGH);
     value = HIGH;
   }
-  // Return the response, build the html page
-  //7
+  // przedstawienie odpowiedzi na stronie HTML
+  
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
-  client.println(""); //  do not forget this one
-  client.println("<!DOCTYPE HTML>");
+  client.println(""); //  pusty znak
+  client.println("<!DOCTYPE HTML>"); //poczatek struktury HTML
   client.println("<html>");
  
   client.print("<center><font size='27'>Relay is now: ");
@@ -115,4 +112,4 @@ void loop() {
   Serial.println("Client disconnected");
   Serial.println("");
  
-}//END
+}
