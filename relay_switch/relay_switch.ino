@@ -20,6 +20,9 @@ IPAddress ip(192, 168, 0, 31); // ustawienie statycznego adresu IP
 IPAddress gateway(10, 0, 0, 1); // ustawienie pasujacej bramki
 IPAddress subnet(255, 255, 255, 0); // ustawienie maski podsieci
 
+//definicja stanu w zmiennej globalnej
+int state = LOW;
+
 // pierwsza charakterystyczna dla mikrokontrolera funkcja incjalizujaca zmienne, predkosci transmisji,
 //przeznaczenie wyprowadzen; wykonwana jednokrotnie
 void setup() {
@@ -80,14 +83,14 @@ void loop() {
   client.flush();
  
   //sprawdzenie aktualnego stanu przekaznika i zapamietanie poprzedniego
-  int value = LOW;
-  if (request.indexOf("/relay=ON") != -1) {
+  
+  if (request.indexOf("/relay=TOGGLE" && state == LOW) != -1) {
     digitalWrite(relayPin, LOW);
-    value = LOW;
+    state = HIGH;
   } 
-  if (request.indexOf("/relay=OFF") != -1){
+  if (request.indexOf("/relay=TOGGLE" && state == HIGH) != -1){
     digitalWrite(relayPin, HIGH);
-    value = HIGH;
+    state = LOW;
   }
   // przedstawienie odpowiedzi na stronie HTML
   
@@ -97,18 +100,14 @@ void loop() {
   client.println("<!DOCTYPE HTML>"); //poczatek struktury HTML
   client.println("<html>");
  
-  client.print("<center><font size='27'>Relay is now: ");
+  client.print("<body bgcolor='#000000'> <center> <font size='25' color='#ffffea'>	<h2>Black Mirror </h2> </font>");
  
-  if(value == HIGH) {
-    client.print("Engaged (ON)");  
+  if(state == HIGH) {
+    client.print("<a href=\"/relay=TOGGLE\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
   } else {
-    client.print("Disengaged (OFF)");
+    client.print("<a href=\"/relay=TOGGLE\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
   }
-  client.println("</font><br><br><br> <h1> <font size='100'>");
-  client.println("<a href=\"/relay=ON\">ON</a> <br><br><br>");
-  client.println("<a href=\"/relay=OFF\">OFF</a><br>");
-  client.println("<a href=\"/relay=TOGGLE\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='http://www.freeiconspng.com/uploads/power-button-icon-22.png' alt='Toogle'  > </a>");
-  client.println("</mark></a></p><\h1></font></center></html>");
+  client.println(" </center></body></html>");
  
   delay(1);
   Serial.println("Client disconnected");
