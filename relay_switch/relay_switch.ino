@@ -84,11 +84,11 @@ void loop() {
  
   //sprawdzenie aktualnego stanu przekaznika i zapamietanie poprzedniego
   
-  if (request.indexOf("/relay=TOGGLE" && state == LOW) != -1) {
+  if (request.indexOf("/relay=ON") != -1) {
     digitalWrite(relayPin, LOW);
     state = HIGH;
   } 
-  if (request.indexOf("/relay=TOGGLE" && state == HIGH) != -1){
+  if (request.indexOf("/relay=OFF") != -1){
     digitalWrite(relayPin, HIGH);
     state = LOW;
   }
@@ -103,9 +103,9 @@ void loop() {
   client.print("<body bgcolor='#000000'> <center> <font size='25' color='#ffffea'>	<h2>Black Mirror </h2> </font>");
  
   if(state == HIGH) {
-    client.print("<a href=\"/relay=TOGGLE\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
+    client.print("<a href=\"/relay=OFF\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
   } else {
-    client.print("<a href=\"/relay=TOGGLE\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
+    client.print("<a href=\"/relay=ON\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
   }
   client.println(" </center></body></html>");
  
