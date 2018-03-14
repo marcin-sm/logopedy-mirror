@@ -80,6 +80,7 @@ void loop() {
   client.flush();
  
   //sprawdzenie aktualnego stanu przekaznika i zapamietanie poprzedniego
+  int value = LOW;
   if (request.indexOf("/relay=ON") != -1) {
     digitalWrite(relayPin, LOW);
     value = LOW;
@@ -106,6 +107,7 @@ void loop() {
   client.println("</font><br><br><br> <h1> <font size='100'>");
   client.println("<a href=\"/relay=ON\">ON</a> <br><br><br>");
   client.println("<a href=\"/relay=OFF\">OFF</a><br>");
+  client.println("<a href=\"/relay=TOGGLE\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='http://www.freeiconspng.com/uploads/power-button-icon-22.png' alt='Toogle'  > </a>");
   client.println("</mark></a></p><\h1></font></center></html>");
  
   delay(1);
