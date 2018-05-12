@@ -1,13 +1,15 @@
 #include <ESP8266WiFi.h>        //zalaczenie biblioteki obslugujacej WiFi w module ESP8266
 
+//WARUNKI UPLOADU: D8 -> GND, D9 -> NULL
+
 //deklaracja danych koniecznych do uzyskania polaczenia z routerem
 const char* ssid = "UPC62DAB45"; 
 const char* password = "Q85kaeduQdfb"; 
 
 //okreslenie pinow sprzezonych z modulami przekaznikow
 
-int relayPin = D7;
-int relayPin2 = D4;
+int relayPin = D2;
+int relayPin2 = D3;
 
 int sensorPin = D5;
 int sensorPin2 = D6;
