@@ -11,8 +11,8 @@ const char* password = "Q85kaeduQdfb";
 int relayPin = D2;
 int relayPin2 = D3;
 
-int sensorPin = D5;
-int sensorPin2 = D6;
+int sensorPin = D4;
+int sensorPin2 = D5;
 
 WiFiServer server(80);
 
