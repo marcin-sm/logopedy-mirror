@@ -1,5 +1,8 @@
-# Simple demo of of the WS2801/SPI-like addressable RGB LED lights.
-import time
+# GND -> blue
+# 5V -> black-white
+# SCKL (GPIO23) -> white
+# MOSI (GPIO6)-> orange
+
 import RPi.GPIO as GPIO
 
 # Import the WS2801 module.
