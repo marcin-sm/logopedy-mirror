@@ -7,12 +7,11 @@ const char* ssid = "UPC62DAB45";
 const char* password = "Q85kaeduQdfb"; 
 
 //okreslenie pinow sprzezonych z modulami przekaznikow
+#define TVRelay D2
+#define LightRelay D3
+#define Lir D5
+#define Rir D6
 
-int relayPin = D2;
-int relayPin2 = D3;
-
-int sensorPin = D4;
-int sensorPin2 = D5;
 
 WiFiServer server(80);
 
@@ -21,8 +20,8 @@ WiFiServer server(80);
 //IPAddress subnet(255, 255, 255, 0); // ustawienie maski podsieci
 
 //definicja stanu w zmiennej globalnej
-boolean state = LOW;
-boolean state2 = LOW;
+boolean LightState = LOW;
+boolean TVState = LOW;
 
 // pierwsza charakterystyczna dla mikrokontrolera funkcja incjalizujaca zmienne, predkosci transmisji,
 //przeznaczenie wyprowadzen; wykonwana jednokrotnie
@@ -30,18 +29,16 @@ void setup() {
   Serial.begin(74880);
   delay(10);
  
-  pinMode(relayPin, OUTPUT);
-  pinMode(relayPin2, OUTPUT);
+  pinMode(TVRelay, OUTPUT);
+  pinMode(LightRelay, OUTPUT);
   
-  pinMode(sensorPin,INPUT_PULLUP); 
-  pinMode(sensorPin2,INPUT_PULLUP);
+  pinMode(Lir,INPUT_PULLUP); 
+  pinMode(Rir,INPUT_PULLUP);
   
-  digitalWrite(relayPin, HIGH);   
-  digitalWrite(relayPin2, HIGH);
- 
-  //
+  digitalWrite(TVRelay, HIGH);   
+  digitalWrite(LightRelay, HIGH);
   
-  Serial.print(F("Setting static ip to : "));
+  //Serial.print(F("Setting static ip to : "));
   //Serial.println(ip);
   
   //Polaczenie z lokalna siecia WIFI
@@ -75,36 +72,37 @@ void setup() {
 void loop() {
   // sprawdzanie polaczenia
   WiFiClient client = server.available();
-  if (!client && digitalRead(sensorPin)==HIGH && digitalRead(sensorPin2)==HIGH) {
+  if (!client && digitalRead(Lir)==HIGH && digitalRead(Rir)==HIGH) {
     return;
   }
  
   // oczekiwanie na informacje o polaczniu
-  Serial.println("new client");
-  while(!client.available() && digitalRead(sensorPin)==HIGH && digitalRead(sensorPin2)==HIGH){
+  //Serial.println("new request");
+  
+  while(!client.available() && digitalRead(Lir)==HIGH && digitalRead(Rir)==HIGH){
     delay(1);
   }
   String request;
-  if(digitalRead(sensorPin)==LOW)
+  if(digitalRead(Lir)==LOW)
   {
-    if(state)
+    if(TVState)
     {
-      request = "GET /relay=OFF HTTP/1.1 200 OK";
+      request = "GET /TVRelay=OFF HTTP/1.1 200 OK";
     }
     else
     {
-      request = "GET /relay=ON HTTP/1.1 200 OK";
+      request = "GET /TVRelay=ON HTTP/1.1 200 OK";
     }
   }
-  else if(digitalRead(sensorPin2)==LOW)
+  else if(digitalRead(Rir)==LOW)
   {
-    if(state2)
+    if(LightState)
     {
-      request = "GET /relay2=OFF HTTP/1.1 200 OK";
+      request = "GET /LightRelay=OFF HTTP/1.1 200 OK";
     }
     else
     {
-      request = "GET /relay2=ON HTTP/1.1 200 OK";
+      request = "GET /LightRelay=ON HTTP/1.1 200 OK";
     }
   }
   else
@@ -117,25 +115,25 @@ void loop() {
  
   //sprawdzenie aktualnego stanu przekaznika i zapamietanie poprzedniego
   
-  if (request.indexOf("/relay=ON") != -1) {
-    digitalWrite(relayPin, LOW);
-    state = HIGH;
+  if (request.indexOf("/TVRelay=ON") != -1) {
+    digitalWrite(TVRelay, LOW);
+    TVState = HIGH;
     delay(200);
   } 
-  if (request.indexOf("/relay=OFF") != -1){
-    digitalWrite(relayPin, HIGH);
-    state = LOW;
+  if (request.indexOf("/TVRelay=OFF") != -1){
+    digitalWrite(TVRelay, HIGH);
+    TVState = LOW;
     delay(200);
   }
 
-  if (request.indexOf("/relay2=ON") != -1) {
-    digitalWrite(relayPin2, LOW);
-    state2 = HIGH;
+  if (request.indexOf("/LightRelay=ON") != -1) {
+    digitalWrite(LightRelay, LOW);
+    LightState = HIGH;
     delay(200);
   } 
-  if (request.indexOf("/relay2=OFF") != -1){
-    digitalWrite(relayPin2, HIGH);
-    state2 = LOW;
+  if (request.indexOf("/LightRelay=OFF") != -1){
+    digitalWrite(LightRelay, HIGH);
+    LightState = LOW;
     delay(200);
   }
   
@@ -149,22 +147,22 @@ void loop() {
  
   client.print("<body bgcolor='#000000'> <center> <font size='25' color='#ffffea'>	<h2>Black Mirror </h2> </font>");
  
-  if(state == HIGH) {
-    client.print("<a href=\"/relay=OFF\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
+  if(LightState == HIGH) {
+    client.print("<a href=\"/LightRelay=OFF\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
   } else {
-    client.print("<a href=\"/relay=ON\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
+    client.print("<a href=\"/LightRelay=ON\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
   }
 
-  if(state2 == HIGH) {
-    client.print("<a href=\"/relay2=OFF\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
+  if(TVState == HIGH) {
+    client.print("<a href=\"/TVRelay=OFF\"><img  style='background:url(http://moziru.com/images/makeup-clipart-border-4.png); background-size: 100%'  src='https://preview.ibb.co/gEVdVH/button.png'   width = '70%'  > </a>");  
   } else {
-    client.print("<a href=\"/relay2=ON\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
+    client.print("<a href=\"/TVRelay=ON\"><img  src='https://preview.ibb.co/gEVdVH/button.png'  width = '70%'  > </a>");
   }
 
   client.println(" </center></body></html>");
  
   delay(1);
-  Serial.println("Client disconnected");
+  //Serial.println("Client disconnected");
   Serial.println("");
  
 }
