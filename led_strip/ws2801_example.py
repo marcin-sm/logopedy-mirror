@@ -3,6 +3,7 @@
 # SCKL (GPIO23) -> white
 # MOSI (GPIO6)-> orange
 
+import time
 import RPi.GPIO as GPIO
 
 # Import the WS2801 module.
