@@ -27,7 +27,7 @@ boolean state2 = LOW;
 // pierwsza charakterystyczna dla mikrokontrolera funkcja incjalizujaca zmienne, predkosci transmisji,
 //przeznaczenie wyprowadzen; wykonwana jednokrotnie
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(74880);
   delay(10);
  
   pinMode(relayPin, OUTPUT);
