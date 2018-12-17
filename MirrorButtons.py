@@ -115,12 +115,12 @@ def special():
     global stateSpecial
     if stateSpecial == 1:
         stateSpecial = 0
-        os.system("python rgb_off.py")
+        os.system("python /home/pi/black-mirror/led_strip/rgb_off.py")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     elif stateSpecial == 0:
         stateSpecial = 1
-        os.system("python rgb.py")
+        os.system("python /home/pi/black-mirror/led_strip/rgb.py")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     time.sleep(0.1)
