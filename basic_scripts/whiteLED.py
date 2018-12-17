@@ -5,4 +5,4 @@ GPIO.setup(18, GPIO.OUT)
 args = [float(x) for x in sys.argv[1:]]
 pwm = GPIO.PWM(18, 1000)
 pwm.start(0)
-pwm.ChangeDutyCycle(float(args))
+pwm.ChangeDutyCycle(args)
