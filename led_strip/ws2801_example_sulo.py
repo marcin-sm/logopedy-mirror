@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Simple demo of of the WS2801/SPI-like addressable RGB LED lights.
 import time
 import RPi.GPIO as GPIO
@@ -67,7 +68,7 @@ def brightness_decrease(pixels, wait=0.01, step=1):
         if wait > 0:
             time.sleep(wait)
  
-def blink_color(pixels, blink_times=5, wait=0.5, color=(255,0,0)):
+def blink_color(pixels, blink_times=5, wait=0.5, color=(255,0,0), duration=0.08):
     for i in range(blink_times):
         # blink two times, then wait
         pixels.clear()
@@ -75,10 +76,9 @@ def blink_color(pixels, blink_times=5, wait=0.5, color=(255,0,0)):
             for k in range(pixels.count()):
                 pixels.set_pixel(k, Adafruit_WS2801.RGB_to_color( color[0], color[1], color[2] ))
             pixels.show()
-            time.sleep(0.08)
+            time.sleep(duration)
             pixels.clear()
             pixels.show()
-            time.sleep(0.08)
         time.sleep(wait)
  
 def appear_from_back(pixels, color=(255, 0, 0)):
@@ -100,20 +100,20 @@ if __name__ == "__main__":
     pixels.clear()
     pixels.show()  # Make sure to call show() after changing any pixels!
  
-    rainbow_cycle_successive(pixels, wait=0.1)
-    rainbow_cycle(pixels, wait=0.01)
+    # rainbow_cycle_successive(pixels, wait=0.1)
+    # rainbow_cycle(pixels, wait=0.01)
  
-    brightness_decrease(pixels)
+    # brightness_decrease(pixels)
     
-    appear_from_back(pixels)
-    
+    # appear_from_back(pixels)
+    start_duration = 0.08
     for i in range(3):
-        blink_color(pixels, blink_times = 1, color=(255, 0, 0))
-        blink_color(pixels, blink_times = 1, color=(0, 255, 0))
-        blink_color(pixels, blink_times = 1, color=(0, 0, 255))
- 
+        blink_color(pixels, blink_times = 1, color=(255, 0, 0), duration=start_duration)
+        blink_color(pixels, blink_times = 1, color=(0, 255, 0), duration=start_duration)
+        blink_color(pixels, blink_times = 1, color=(0, 0, 255), duration=start_duration)
+	start_duration *= 2 
     
     
-    rainbow_colors(pixels)
+    # rainbow_colors(pixels)
     
     brightness_decrease(pixels)
