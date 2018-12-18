@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import os
 from time import sleep
+import /home/pi/black-mirror/logopedy/moutchExercises
 
 GPIO.setmode(GPIO.BCM)
 
@@ -16,7 +17,7 @@ GPIO.setup(buttonR,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 GPIO.setup(relayTV,GPIO.OUT)
 GPIO.setup(relayBulbs,GPIO.OUT)
 
-stateTV = 1
+stateTV = 0
 stateBulbs = 1
 stateScreen = 0
 stateSpecial= 0
@@ -124,6 +125,7 @@ def special():
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     time.sleep(0.1)
+    moutchExercises.py
 
 while True:
     start = time.time()
