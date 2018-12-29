@@ -3,25 +3,37 @@ import time
 import fan1
 import fan2
 import TV
+from subprocess import PIPE, Popen
+
+cpu = 0
+gpu = 0
 
 def measure_temp():
-        temp = os.popen("vcgencmd measure_temp").readline()
-        return (temp.replace("temp=",""))
-fake = 50
+        global cpu
+        global gpu
+        tFile = open('/sys/class/thermal/thermal_zone0/temp')
+        cpu = float(tFile.read())
+        cpu = cpu/1000
+        process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
+        output, _error = process.communicate()
+        return float(output[output.index('=') + 1:output.rindex("'")])
+
 
 while True:
-        print(measure_temp())
-        time.sleep(1)
-        if (fake < 60.0):
+        gpu = measure_temp()
+        temp = max(cpu,gpu)
+        print('CPU: '+ str(cpu) + "'C" + "\t" + 'GPU: '+ str(gpu) + "'C" + "\t" + 'MAX: '+ str(temp) + "'C" )
+        if (temp < 60.0):
             fan1.off()
             fan2.off()
-        elif (fake >= 60.0 and fake < 65.00):
+        elif (temp >= 60.0 and temp < 65.00):
             fan1.on()
             fan2.off()
-        elif (fake >= 65.0 and fake < 70.00):
+        elif (temp >= 65.0 and temp < 70.00):
             fan1.on()
             fan2.on()
-        elif (fake >= 70.0):
+        elif (temp >= 70.0):
             TV.off()
             fan1.on()
             fan2.on()
+        time.sleep(1)
