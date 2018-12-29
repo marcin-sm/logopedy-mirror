@@ -3,7 +3,7 @@ import sys
 fan2 = 22
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(fan1,GPIO.OUT)
+GPIO.setup(fan2,GPIO.OUT)
 
 if __name__ == "__main__":
     args =  sys.argv[1:]
