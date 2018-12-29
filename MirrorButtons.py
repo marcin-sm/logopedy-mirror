@@ -1,8 +1,10 @@
 import RPi.GPIO as GPIO
 import time
 import os
+import sys
 from time import sleep
-import /home/pi/black-mirror/logopedy/moutchExercises
+sys.path.append('/home/pi/black-mirror/logopedy/')
+import moutchExercises
 
 GPIO.setmode(GPIO.BCM)
 
@@ -53,8 +55,8 @@ def leftPress():
     if count == 2:
         GPIO.remove_event_detect(buttonL)
         print "buttonL pressed " + str(count) + " times"
+        GPIO.add_event_detect(buttonL, GPIO.BOTH, bouncetime=1000)
         special()
-        GPIO.add_event_detect(buttonL, GPIO.BOTH, bouncetime=1000)		
     
     if count == 3:
         GPIO.remove_event_detect(buttonL)       
@@ -125,7 +127,7 @@ def special():
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     time.sleep(0.1)
-    moutchExercises.py
+    moutchExercises.start()
 
 while True:
     start = time.time()
