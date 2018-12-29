@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import sys
 fan2 = 22
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
