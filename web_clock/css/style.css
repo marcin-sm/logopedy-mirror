@@ -1,0 +1,16 @@
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: "Lucida Console";
+  font-size: 250%;
+}
+
+p {
+  text-align: center;
+}
+
+.header {
+  color: #000;
+  margin: 0px;
+  padding: 0px;
+}
