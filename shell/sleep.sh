@@ -1,0 +1,1 @@
+sudo XAUTHORITY=/home/pi/.Xauthority DISPLAY=:0.0 xset dpms force off

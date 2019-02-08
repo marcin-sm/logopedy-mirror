@@ -1,0 +1,1 @@
+python /home/pi/black-mirror/basic_scripts/door.py
