@@ -30,19 +30,19 @@ def leftPress():
     print 'left: '+str(exercise)
 
 #def start():
-  while True:
-      start = time.time()
-      if GPIO.event_detected(buttonR):
-          #time.sleep(.01)
-          #print('buttonR pressed')
-          rightPress()
-      if GPIO.event_detected(buttonL):
-          #time.sleep(.01)
-          leftPress()
-      if time.time() - start > 5:
-         continue
-      time.sleep(0.0001)
-      
+while True:
+    start = time.time()
+    if GPIO.event_detected(buttonR):
+        #time.sleep(.01)
+        #print('buttonR pressed')
+        rightPress()
+    if GPIO.event_detected(buttonL):
+        #time.sleep(.01)
+        leftPress()
+    if time.time() - start > 5:
+       continue
+    time.sleep(0.0001)
+    
 
 #if __name__ == '__main__':
 #    # test1.py executed as script
