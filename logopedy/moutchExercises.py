@@ -16,6 +16,9 @@ exercise = 0
 GPIO.setup(buttonL,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttonR,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 
+GPIO.add_event_detect(buttonR, GPIO.BOTH, bouncetime=1000)  # add both edge detection on a channel
+GPIO.add_event_detect(buttonL, GPIO.BOTH, bouncetime=1000)
+
 #"The sum of 1 + 2 is {0}".format(1+2)
 
 def rightPress():

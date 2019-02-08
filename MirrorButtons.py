@@ -3,8 +3,7 @@ import time
 import os
 import sys
 from time import sleep
-sys.path.append('/home/pi/black-mirror/logopedy/')
-import moutchExercises
+
 
 GPIO.setmode(GPIO.BCM)
 
