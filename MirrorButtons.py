@@ -118,17 +118,22 @@ def special():
     global stateSpecial
     if stateSpecial == 0:
         stateSpecial = 1
-        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 0")
+        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 10")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     elif stateSpecial == 1:
         stateSpecial = 2
-        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 40")
+        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 30")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     elif stateSpecial == 2:
-        stateSpecial = 0
+        stateSpecial = 3
         os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 100")
+        print "special: " + str(stateSpecial)
+        time.sleep(0.1)
+    elif stateSpecial == 3:
+        stateSpecial = 0
+        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 0")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     time.sleep(0.1)
