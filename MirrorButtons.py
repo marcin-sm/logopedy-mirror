@@ -116,18 +116,23 @@ def toggleScreen():
 	
 def special():
     global stateSpecial
-    if stateSpecial == 1:
-        stateSpecial = 0
-        os.system("python /home/pi/black-mirror/led_strip/rgb_off.py")
+    if stateSpecial == 0:
+        stateSpecial = 1
+        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 0")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
-    elif stateSpecial == 0:
-        stateSpecial = 1
-        os.system("python /home/pi/black-mirror/led_strip/rgb.py")
+    elif stateSpecial == 1:
+        stateSpecial = 2
+        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 40")
+        print "special: " + str(stateSpecial)
+        time.sleep(0.1)
+    elif stateSpecial == 2:
+        stateSpecial = 0
+        os.system("python /home/pi/black-mirror/basic_scripts/whiteLED.py 100")
         print "special: " + str(stateSpecial)
         time.sleep(0.1)
     time.sleep(0.1)
-    moutchExercises.start()
+    #moutchExercises.start()
 
 while True:
     start = time.time()
