@@ -29,7 +29,7 @@ def leftPress():
     os.system("omxplayer --loop -o hdmi /home/pi/Videos/logopedy/cw_{0}.mp4 &".format(exercise))
     print 'left: '+str(exercise)
 
-def start():
+#def start():
   while True:
       start = time.time()
       if GPIO.event_detected(buttonR):
@@ -44,7 +44,7 @@ def start():
       time.sleep(0.0001)
       
 
-if __name__ == '__main__':
-    # test1.py executed as script
-    # do something
-    start()
+#if __name__ == '__main__':
+#    # test1.py executed as script
+#    # do something
+#    start()
