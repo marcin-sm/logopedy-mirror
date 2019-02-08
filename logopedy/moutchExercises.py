@@ -6,10 +6,15 @@ from time import sleep
 sys.path.append('/home/pi/Videos/logopedy/')
 file = 'cw_'+'4'+'.mp4'
 
+GPIO.setmode(GPIO.BCM)
+
 buttonR = 23
 buttonL = 24
 
 exercise = 0
+
+GPIO.setup(buttonL,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+GPIO.setup(buttonR,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 
 #"The sum of 1 + 2 is {0}".format(1+2)
 
@@ -42,9 +47,3 @@ while True:
     if time.time() - start > 5:
        continue
     time.sleep(0.0001)
-    
-
-#if __name__ == '__main__':
-#    # test1.py executed as script
-#    # do something
-#    start()
